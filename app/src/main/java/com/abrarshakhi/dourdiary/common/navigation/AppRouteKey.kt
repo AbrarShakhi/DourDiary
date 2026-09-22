@@ -13,8 +13,17 @@ sealed interface AppRouteKey : NavKey {
     data object Home : AppRouteKey, BottomBarKey
 
     @Serializable
+    data object Record : AppRouteKey, BottomBarKey
+
+    @Serializable
     data object History : AppRouteKey, BottomBarKey
 
     @Serializable
     data object Settings : AppRouteKey, BottomBarKey
+
+    @Serializable
+    data object Licenses : AppRouteKey
+
+    @Serializable
+    data class RunSummary(val runId: Long) : AppRouteKey
 }

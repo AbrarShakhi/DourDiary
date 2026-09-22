@@ -1,14 +1,16 @@
 package com.abrarshakhi.dourdiary.common.ui.theme
 
-import android.os.Build
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 import com.abrarshakhi.dourdiary.common.domain.model.AppTheme
 
 private val LightColorScheme = lightColorScheme(
@@ -40,6 +42,13 @@ private val LightColorScheme = lightColorScheme(
     inverseOnSurface = LightInverseOnSurface,
     inversePrimary = LightInversePrimary,
     scrim = LightScrim,
+    surfaceDim = LightSurfaceDim,
+    surfaceBright = LightSurfaceBright,
+    surfaceContainerLowest = LightSurfaceContainerLowest,
+    surfaceContainerLow = LightSurfaceContainerLow,
+    surfaceContainer = LightSurfaceContainer,
+    surfaceContainerHigh = LightSurfaceContainerHigh,
+    surfaceContainerHighest = LightSurfaceContainerHighest,
 )
 
 private val DarkColorScheme = darkColorScheme(
@@ -71,15 +80,18 @@ private val DarkColorScheme = darkColorScheme(
     inverseOnSurface = DarkInverseOnSurface,
     inversePrimary = DarkInversePrimary,
     scrim = DarkScrim,
+    surfaceDim = DarkSurfaceDim,
+    surfaceBright = DarkSurfaceBright,
+    surfaceContainerLowest = DarkSurfaceContainerLowest,
+    surfaceContainerLow = DarkSurfaceContainerLow,
+    surfaceContainer = DarkSurfaceContainer,
+    surfaceContainerHigh = DarkSurfaceContainerHigh,
+    surfaceContainerHighest = DarkSurfaceContainerHighest,
 )
-
-val isDynamicColorSupported: Boolean
-    get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
 @Composable
 fun DourDiaryTheme(
     appTheme: AppTheme = AppTheme.SYSTEM,
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     val useDarkTheme = when (appTheme) {
@@ -88,19 +100,31 @@ fun DourDiaryTheme(
         AppTheme.DARK -> true
     }
 
-    val colorScheme = when {
-        dynamicColor && isDynamicColorSupported -> {
-            val context = LocalContext.current
-            if (useDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        useDarkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    SyncSystemBarsWith(useDarkTheme)
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = if (useDarkTheme) DarkColorScheme else LightColorScheme,
         typography = Typography,
         content = content,
     )
+}
+
+@Composable
+private fun SyncSystemBarsWith(useDarkTheme: Boolean) {
+    val view = LocalView.current
+    if (view.isInEditMode) return
+
+    SideEffect {
+        val window = view.context.findActivity()?.window ?: return@SideEffect
+        WindowCompat.getInsetsController(window, view).apply {
+            isAppearanceLightStatusBars = !useDarkTheme
+            isAppearanceLightNavigationBars = !useDarkTheme
+        }
+    }
+}
+
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }

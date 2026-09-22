@@ -1,5 +1,6 @@
 package com.abrarshakhi.dourdiary.common.main
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
@@ -24,11 +25,20 @@ data class ScreenChrome(
     val topBar: @Composable (ChromeScope) -> Unit = {},
     val fab: @Composable (ChromeScope) -> Unit = {},
     val bottomBar: BottomBarKey? = null,
+    val contentWindowInsets: WindowInsets? = null,
 )
 
+// FIXME: later use a proper chrome
 fun AppRouteKey.chrome(): ScreenChrome = when (this) {
-    AppRouteKey.Onboarding -> onboardingChrome()
-    AppRouteKey.Home -> homeChrome()
-    AppRouteKey.History -> historyChrome()
-    AppRouteKey.Settings -> settingsChrome()
+    is AppRouteKey.Onboarding -> onboardingChrome()
+    is AppRouteKey.Home -> homeChrome()
+    is AppRouteKey.Record -> trackingChrome()
+    is AppRouteKey.History -> historyChrome()
+    is AppRouteKey.Settings -> settingsChrome()
+    is AppRouteKey.Licenses -> licensesChrome()
+    is AppRouteKey.RunSummary -> runSummaryChrome()
 }
+
+fun trackingChrome() = ScreenChrome()
+fun licensesChrome() = ScreenChrome()
+fun runSummaryChrome() = ScreenChrome()

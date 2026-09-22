@@ -19,9 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val mainAppViewModel: MainAppViewModel = koinViewModel()
             val preferences by mainAppViewModel.preferences.collectAsStateWithLifecycle()
-
             val loaded = preferences ?: return@setContent
-
             DourDiaryTheme(appTheme = loaded.theme) {
                 AppRoot(
                     startRoute = if (loaded.hasCompletedOnboarding) {

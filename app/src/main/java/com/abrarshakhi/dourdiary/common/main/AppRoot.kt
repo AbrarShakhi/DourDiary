@@ -39,7 +39,7 @@ fun AppRoot(startRoute: AppRouteKey = AppRouteKey.Home) {
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
-        contentWindowInsets = WindowInsets.safeDrawing,
+        contentWindowInsets = chrome.contentWindowInsets ?: WindowInsets.safeDrawing,
         topBar = { chrome.topBar(chromeScope) },
         floatingActionButton = { chrome.fab(chromeScope) },
         bottomBar = {

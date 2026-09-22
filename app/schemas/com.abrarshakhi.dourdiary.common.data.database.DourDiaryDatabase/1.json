@@ -1,0 +1,180 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "bf5fe3ab399b978a5a38192e013dfd62",
+    "entities": [
+      {
+        "tableName": "runs",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `startedAtEpochMillis` INTEGER NOT NULL, `finishedAtEpochMillis` INTEGER, `distanceMeters` REAL NOT NULL DEFAULT 0, `movingDurationMillis` INTEGER NOT NULL DEFAULT 0, `elapsedDurationMillis` INTEGER NOT NULL DEFAULT 0, `accumulatedPausedMillis` INTEGER NOT NULL DEFAULT 0, `isComplete` INTEGER NOT NULL DEFAULT 0)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startedAtEpochMillis",
+            "columnName": "startedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "finishedAtEpochMillis",
+            "columnName": "finishedAtEpochMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "distanceMeters",
+            "columnName": "distanceMeters",
+            "affinity": "REAL",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "movingDurationMillis",
+            "columnName": "movingDurationMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "elapsedDurationMillis",
+            "columnName": "elapsedDurationMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "accumulatedPausedMillis",
+            "columnName": "accumulatedPausedMillis",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "isComplete",
+            "columnName": "isComplete",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_runs_isComplete",
+            "unique": false,
+            "columnNames": [
+              "isComplete"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_runs_isComplete` ON `${TABLE_NAME}` (`isComplete`)"
+          },
+          {
+            "name": "index_runs_startedAtEpochMillis",
+            "unique": false,
+            "columnNames": [
+              "startedAtEpochMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_runs_startedAtEpochMillis` ON `${TABLE_NAME}` (`startedAtEpochMillis`)"
+          }
+        ]
+      },
+      {
+        "tableName": "run_points",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `runId` INTEGER NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `altitudeMeters` REAL, `epochMillis` INTEGER NOT NULL, `elapsedRealtimeMillis` INTEGER NOT NULL, `cumulativeDistanceMeters` REAL NOT NULL, FOREIGN KEY(`runId`) REFERENCES `runs`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "runId",
+            "columnName": "runId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "altitudeMeters",
+            "columnName": "altitudeMeters",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "epochMillis",
+            "columnName": "epochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "elapsedRealtimeMillis",
+            "columnName": "elapsedRealtimeMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cumulativeDistanceMeters",
+            "columnName": "cumulativeDistanceMeters",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_run_points_runId",
+            "unique": false,
+            "columnNames": [
+              "runId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_run_points_runId` ON `${TABLE_NAME}` (`runId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "runs",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "runId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bf5fe3ab399b978a5a38192e013dfd62')"
+    ]
+  }
+}

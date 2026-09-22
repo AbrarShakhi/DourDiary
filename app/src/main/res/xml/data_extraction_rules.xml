@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Recorded runs are precise location history. They never leave the device:
-  no cloud backup, no device-to-device transfer.
--->
 <data-extraction-rules>
     <cloud-backup>
         <exclude domain="root" />

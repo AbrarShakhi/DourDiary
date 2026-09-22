@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--
-      Painted by the window before Compose draws its first frame. Kept in sync with the
-      light color scheme's surface so cold start does not flash a different color.
-    -->
     <color name="launch_background">#FBFDF8</color>
 </resources>

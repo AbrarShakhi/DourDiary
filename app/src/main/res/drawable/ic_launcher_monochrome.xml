@@ -8,11 +8,10 @@
 
     <path
         android:pathData="M49,46 C49,52.5 41.78,59 30,59 L30,33 C41.78,33 49,39.5 49,46 L60,46 L60,72 C71.78,72 79,65.5 79,59 C79,53.15 73.1518,47.3 63.3945,46.1885"
-        android:strokeColor="#FFFFF6F0"
+        android:strokeColor="#FFFFFFFF"
         android:strokeWidth="6"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
 
-    <path android:pathData="M70.8945,46.1885 A7.5,7.5 0 1,1 55.8945,46.1885 A7.5,7.5 0 1,1 70.8945,46.1885 Z" android:fillColor="#FFFFF6F0" />
-    <path android:pathData="M68.1945,46.1885 A4.8,4.8 0 1,1 58.5945,46.1885 A4.8,4.8 0 1,1 68.1945,46.1885 Z" android:fillColor="#FFF2CD86" />
+    <path android:pathData="M70.8945,46.1885 A7.5,7.5 0 1,1 55.8945,46.1885 A7.5,7.5 0 1,1 70.8945,46.1885 Z" android:fillColor="#FFFFFFFF" />
 </vector>

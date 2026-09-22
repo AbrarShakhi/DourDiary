@@ -11,7 +11,10 @@ import com.abrarshakhi.dourdiary.common.navigation.BottomBarKey
 import com.abrarshakhi.dourdiary.features.history.presentation.historyChrome
 import com.abrarshakhi.dourdiary.features.home.presentation.homeChrome
 import com.abrarshakhi.dourdiary.features.onboarding.presentation.onboardingChrome
+import com.abrarshakhi.dourdiary.features.settings.presentation.licensesChrome
 import com.abrarshakhi.dourdiary.features.settings.presentation.settingsChrome
+import com.abrarshakhi.dourdiary.features.summary.presentation.runSummaryChrome
+import com.abrarshakhi.dourdiary.features.tracking.presentation.trackingChrome
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Immutable
@@ -28,7 +31,6 @@ data class ScreenChrome(
     val contentWindowInsets: WindowInsets? = null,
 )
 
-// FIXME: later use a proper chrome
 fun AppRouteKey.chrome(): ScreenChrome = when (this) {
     is AppRouteKey.Onboarding -> onboardingChrome()
     is AppRouteKey.Home -> homeChrome()
@@ -38,7 +40,3 @@ fun AppRouteKey.chrome(): ScreenChrome = when (this) {
     is AppRouteKey.Licenses -> licensesChrome()
     is AppRouteKey.RunSummary -> runSummaryChrome()
 }
-
-fun trackingChrome() = ScreenChrome()
-fun licensesChrome() = ScreenChrome()
-fun runSummaryChrome() = ScreenChrome()

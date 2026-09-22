@@ -14,10 +14,10 @@ class MainAppViewModel(
     appPreferencesRepository: AppPreferencesRepository,
 ) : ViewModel() {
 
-    val preferences: StateFlow<AppPreferences> = appPreferencesRepository.preferences.stateIn(
+    val preferences: StateFlow<AppPreferences?> = appPreferencesRepository.preferences.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MS.milliseconds),
-            initialValue = AppPreferences(),
+            initialValue = null,
         )
 
     private companion object {

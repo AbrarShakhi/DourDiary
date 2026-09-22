@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.abrarshakhi.dourdiary.common.main.AppRoot
 import com.abrarshakhi.dourdiary.common.main.MainAppViewModel
+import com.abrarshakhi.dourdiary.common.navigation.AppRouteKey
 import com.abrarshakhi.dourdiary.common.ui.theme.DourDiaryTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -19,11 +20,16 @@ class MainActivity : ComponentActivity() {
             val mainAppViewModel: MainAppViewModel = koinViewModel()
             val preferences by mainAppViewModel.preferences.collectAsStateWithLifecycle()
 
-            DourDiaryTheme(
-                appTheme = preferences.theme,
-                dynamicColor = preferences.dynamicColor,
-            ) {
-                AppRoot()
+            val loaded = preferences ?: return@setContent
+
+            DourDiaryTheme(appTheme = loaded.theme) {
+                AppRoot(
+                    startRoute = if (loaded.hasCompletedOnboarding) {
+                        AppRouteKey.Home
+                    } else {
+                        AppRouteKey.Onboarding
+                    },
+                )
             }
         }
     }

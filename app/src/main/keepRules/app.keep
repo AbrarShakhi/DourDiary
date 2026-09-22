@@ -1,0 +1,4 @@
+-keep class com.abrarshakhi.dourdiary.features.tracking.service.RunTrackingService { *; }
+
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile

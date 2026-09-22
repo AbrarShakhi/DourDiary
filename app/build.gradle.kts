@@ -1,8 +1,17 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
 }
+
+val keystoreProperties: Properties? =
+    providers.fileContents(layout.projectDirectory.file("keystore.properties"))
+        .asText
+        .map { text -> Properties().apply { load(text.reader()) } }
+        .orNull
 
 android {
     namespace = "com.abrarshakhi.dourdiary"
@@ -20,11 +29,23 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        keystoreProperties?.let { properties ->
+            create("release") {
+                storeFile = file(properties.getProperty("storeFile"))
+                storePassword = properties.getProperty("storePassword")
+                keyAlias = properties.getProperty("keyAlias")
+                keyPassword = properties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
             optimization {
-                enable = false
+                enable = true
             }
+            signingConfig = signingConfigs.findByName("release")
         }
     }
     compileOptions {
@@ -35,6 +56,15 @@ android {
         compose = true
         buildConfig = true
     }
+
+    sourceSets.getByName("androidTest") {
+        assets.directories.add(layout.projectDirectory.dir("schemas").asFile.path)
+    }
+}
+
+ksp {
+    arg("room.schemaLocation", layout.projectDirectory.dir("schemas").asFile.path)
+    arg("room.generateKotlin", "true")
 }
 
 dependencies {
@@ -60,6 +90,12 @@ dependencies {
 
     implementation(libs.androidx.datastore.preferences)
 
+    implementation(libs.play.services.location)
+    implementation(libs.maplibre.android.sdk)
+
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
@@ -78,6 +114,8 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)

@@ -1,0 +1,15 @@
+-keepattributes *Annotation*, InnerClasses
+
+-keep,includedescriptorclasses class com.abrarshakhi.dourdiary.**$$serializer { *; }
+
+-keepclassmembers class com.abrarshakhi.dourdiary.** {
+    *** Companion;
+}
+
+-keepclasseswithmembers class com.abrarshakhi.dourdiary.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+-keepclassmembers @kotlinx.serialization.Serializable class com.abrarshakhi.dourdiary.** {
+    public static ** INSTANCE;
+}
